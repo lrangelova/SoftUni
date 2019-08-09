@@ -1,26 +1,24 @@
-const home = function(){
-    const index = function(ctx){
-        ctx.isSigned = !!storage.getData('authToken');
-        this.loadPartials({
-            header: './views/common/header.hbs',
-            footer: './views/common/footer.hbs',
-            homepage: './views/home.hbs'
+const homeController = function () {
+
+    const getHome = function (context) {
+
+        const loggedIn = storage.getData('userInfo') !== null;
+        
+        if(loggedIn){
+            const username = JSON.parse(storage.getData('userInfo')).username;
+            context.loggedIn = loggedIn;
+            context.username = username;
+        }
+
+        context.loadPartials({
+            header: "./views/common/header.hbs",
+            footer: "./views/common/footer.hbs"
         }).then(function(){
-            if(ctx.isSigned){
-                furnitureModel.getAll().then((data) => {
-                    ctx.furniture = data;
-                    this.partial('./views/Home/home.hbs');
-                })
-            } else {
-                ctx.furniture = {}
-                this.partial('./views/Home/home.hbs');
-            }
-        }).catch((err) => {
-            console.log(err);
+            this.partial('./views/home/home.hbs')
         })
-    }
+    };
 
     return {
-        index
-    };
+        getHome
+    }
 }();

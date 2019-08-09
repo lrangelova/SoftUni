@@ -1,11 +1,9 @@
 const requester = function () {
     const baseUrl = "https://baas.kinvey.com";
-
     const get = function (url, headers) {
         headers.method = "GET";
         return makeRequest(url, headers);
     };
-
 
     const post = function (url, headers) {
         headers.method = "POST";
